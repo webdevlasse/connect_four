@@ -1,4 +1,7 @@
 require_relative '../lib/game.rb'
+require_relative '../lib/board.rb'
+require 'simplecov'
+SimpleCov.start
 
 describe Game do
   let (:game) { Game.new }
@@ -9,6 +12,9 @@ describe Game do
     it "initializes with a current player" do
       game.current_player.should_not be_nil
     end
+    it "initializes with current player set to 0" do
+      game.current_player.should eq 0
+    end
   end
   describe "#current_player" do
     it "is 0 or 1" do
@@ -16,13 +22,14 @@ describe Game do
     end
   end
   context "game play" do
-    describe "#game_over?" do
-      it "returns true or false" do
-        #(game.game_over?).should_receive(:won?).and_return true
-      end
+    describe "#status" do
       it "checks the board state" do
-        # (game.board).should_receive(:won?)
-        #        game.game_over?
+        (game.board).should_receive(:state)
+        game.status
+      end
+      it "returns win, tie or nil" do
+        game.send_move_to_board(4)
+        (game.status).should eq nil
       end
       it "saves the game result to the database if the game is over" do
       pending
@@ -38,7 +45,7 @@ describe Game do
         expect{game.send_move_to_board}.to raise_error ArgumentError
       end
       it "sends the move to the board" do
-        (game.board).should_receive(:place_piece)
+        (game.board).should_receive(:place)
         game.send_move_to_board(4)
       end
     end
@@ -51,7 +58,10 @@ describe Game do
         @current_player = game.current_player
         game.should_receive(:won?).and_return(false)
         game.should_receive(:tie?).and_return(true)
-        game.game_result[@current_player].should eq :tied
+        game.game_result[@current_player].should eq :tie
+      end
+      it "returns the correct outcome for each player" do
+        @current_player = game.current_player
       end
     end
   end

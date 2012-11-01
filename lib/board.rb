@@ -21,9 +21,9 @@ class Board
 
   def state
     if column_win? || row_win? || diagonal_win?
-      return WIN
+      return :win
     elsif tie?
-      return TIE
+      return :tie
     end
     nil
   end
@@ -67,7 +67,7 @@ class Board
 
     until column_index == num_cols || row_index == 0
       column_index += 1
-      row_index -= 1 
+      row_index -= 1
       right_array << cells[column_index][row_index]
     end
     right_array
@@ -89,7 +89,7 @@ class Board
 
     until column_index == num_cols || row_index == num_rows - 1
       column_index += 1
-      row_index += 1 
+      row_index += 1
       right_array << cells[column_index][row_index]
     end
     right_array
@@ -106,11 +106,21 @@ class Board
     left_array.reverse
   end
 
+  def show
+    index = num_rows - 1
+    puts ""
+    num_rows.times do
+      cells.each { |column| column[index] != nil ? (print "| #{column[index]} ") : (print "|   ") }
+      index -= 1
+      print "|\n"
+    end
+    puts ""
+  end
+
   private
 
   def diagonal_elements
-    [[], current_column_played, cells[current_column_played].length - 1, cells.length - 1] 
+    [[], current_column_played, cells[current_column_played].length - 1, cells.length - 1]
   end
 
 end
-
