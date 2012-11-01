@@ -2,11 +2,12 @@ require_relative 'column'
 
 class Board
 
-  attr_reader :cells, :num_rows, :current_column_played, :current_player
+  attr_reader :cells, :num_cols, :num_rows, :current_column_played, :current_player
 
   def initialize(num_cols = 7, num_rows = 6)
     @cells = create_columns(num_cols)
     @num_rows = num_rows
+    @num_cols = num_cols
   end
 
   def place(column_index, player)
@@ -17,6 +18,14 @@ class Board
 
   def create_columns(num_cols)
     (0..num_cols-1).reduce([]) { |cells| cells << Column.new }
+  end
+
+  def populate
+    cells.each_with_index { |cell, index| 6.times { cell << index} }
+  end
+
+  def set_last(col_num)
+    @current_column_played = col_num
   end
 
   def state
@@ -44,8 +53,8 @@ class Board
   end
 
   def diagonal_win?
-    d0_pieces, d1_pieces = diagonals.map { |diagonal| nil_to_hash_sign(diagonal).join }
-    connect_four?(d0_pieces) || connect_four?(d1_pieces)
+    first_pieces, second_pieces = diagonals.map { |diagonal| nil_to_hash_sign(diagonal).join }
+    connect_four?(first_pieces) || connect_four?(second_pieces)
   end
 
   def connect_four?(pieces)
