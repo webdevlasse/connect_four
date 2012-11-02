@@ -31,9 +31,6 @@ describe Game do
         game.send_move_to_board(4)
         (game.status).should eq nil
       end
-      it "saves the game result to the database if the game is over" do
-      pending
-      end
     end
     describe "#next_turn" do
       it "switches players" do
