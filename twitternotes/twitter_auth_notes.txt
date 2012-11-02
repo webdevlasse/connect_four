@@ -1,0 +1,25 @@
+Session
+#life_span
+#session_id
+#user_name
+#challenger_user_name
+#game
+#script
+#exists?
+-- if not, create new session and send username to session
+-- else, send username to existing session
+#game_over?
+#close_session
+-- cues save to db
+-- cues removal from SessionHandler #open_sessions
+
+SessionHandler
+#open_sessions => []
+#send_to(session)
+
+to initialize game
+- someone tweets a challenge: 'who wants to get demolished? #dbc_c4'
+- someone accepts the challenge: 'game one! #dbc_c4'
+- #board?
+- #challenge_accepted?
+- #new_session with username
