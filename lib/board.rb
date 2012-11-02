@@ -8,6 +8,7 @@ class Board
     @cells = create_columns(num_cols)
     @num_rows = num_rows
     @num_cols = num_cols
+    @value
   end
 
   def place(column_index, player)
