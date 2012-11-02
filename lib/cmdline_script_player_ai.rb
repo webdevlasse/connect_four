@@ -28,6 +28,7 @@ begin
     move = gets.chomp.to_i
   end
   ai.play(move)
+  p2.move
   human_last = true
   game.board.show
   
@@ -40,7 +41,7 @@ begin
     p2.play(move)
     human_last = false
   end
-  game.next_turn
+
 end until game.over?
 game.next_turn # one more time to set conditionals
 game.board.show
