@@ -1,25 +1,21 @@
 require_relative 'game.rb'
 require_relative 'user.rb'
+require_relative 'computer.rb'
 
-puts 'player0, enter your twitter name'
-user0 = User.new(gets.chomp, 0)
+puts 'player0 is the computer'
+computer = Computer.new
 puts 'player1, enter your twitter name'
-user1 = User.new(gets.chomp, 1)
+human = User.new(gets.chomp, 1)
 
 game = Game.new
 
-game.board.show
-puts "Player #{game.current_player}, please enter move"
-player_input = gets.chomp.to_i
-until game.send_move_to_board(player_input)
-  puts "That column doesn't exist. Please choose another column."
-  player_input = gets.chomp.to_i
-end
-
+player_input = computer.move
+game.send_move_to_board(player_input)
 game.board.show
 
 until game.status == :win || game.status == :tie
   game.next_turn
+
   puts "Player #{game.current_player}, please enter move"
   player_input = gets.chomp.to_i
   until game.send_move_to_board(player_input)
@@ -27,11 +23,18 @@ until game.status == :win || game.status == :tie
     player_input = gets.chomp.to_i
   end
   game.board.show
+
+  if game.status == nil
+    game.next_turn
+
+    player_input = computer.move
+    game.send_move_to_board(player_input)
+    game.board.show
+  end
 end
 
-user0.update_stats(game.result)
-user1.update_stats(game.result)
+
+human.update_stats(game.result)
 puts "Player #{game.current_player} won!"
-p user0.show_stats
-p user1.show_stats
+p human.show_stats
 

@@ -20,7 +20,7 @@ class Game
   end
 
   def send_move_to_board(column)
-    @board.place(column - 1, current_player)
+    column.between?(1,7) ? @board.place(column - 1, current_player) : false
   end
 
   def result
@@ -32,20 +32,6 @@ class Game
     end
     result
   end
-
-  # def result
-  #   result = [[@current_player, ''], [other_player, '']]
-  #   if won?
-  #     result[0][1] = :win
-  #     result[1][1] = :loss
-  #     #result[@current_player], result[@other_player] = :win, :loss
-  #   elsif tie?
-  #     result[0][1] = :tie
-  #     result[1][1] = :tie
-  #     # result[@current_player], result[@other_player] = :tie, :tie
-  #   end
-  #   result
-  # end
 
   private
   def other_player
