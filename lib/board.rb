@@ -49,7 +49,7 @@ class Board
 
   def row_win?
     last_piece_row_index = @cells[current_column_played].length - 1
-    row_pieces = cells.map { |column| column[last_piece_row_index] }.join
+    row_pieces = nil_to_hash_sign(cells.map { |column| column[last_piece_row_index] }).join
     connect_four?(row_pieces)
   end
 
