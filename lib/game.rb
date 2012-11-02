@@ -23,6 +23,11 @@ class Game
     column.between?(1,7) ? @board.place(column - 1, current_player) : false
   end
 
+  def play(column)
+    send_move_to_board(column)
+    next_turn
+  end
+
   def result
     result = [:loss, :loss]
     if won?
@@ -33,10 +38,18 @@ class Game
     result
   end
 
+  def over?
+    return true if board.state == :win || board.state == :tie
+    false
+  end
+
   private
+
   def other_player
     current_player == 0 ? 1 : 0
   end
+
+
 
   def won?
     status == :win
