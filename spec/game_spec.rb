@@ -49,16 +49,12 @@ describe Game do
         game.send_move_to_board(4)
       end
     end
-    describe "#save_game_result" do
-      it "saves the game result to a database" do
-      end
-    end
-    describe "#game_result" do
+    describe "#result" do
       it "returns the outcome of the game for the players" do
         @current_player = game.current_player
         game.should_receive(:won?).and_return(false)
         game.should_receive(:tie?).and_return(true)
-        game.game_result[@current_player].should eq :tie
+        game.result[0].should eq :tie
       end
       it "returns the correct outcome for each player" do
         @current_player = game.current_player

@@ -1,7 +1,12 @@
 require_relative 'game.rb'
+require_relative 'user.rb'
+
+puts 'player0, enter your twitter name'
+user0 = User.new(gets.chomp, 0)
+puts 'player1, enter your twitter name'
+user1 = User.new(gets.chomp, 1)
 
 game = Game.new
-# game.play_human_vs_human
 puts "If you would like to play against the computer, please enter 'computer' now. If you would like to compete against someone real, please enter 'person' now..."
 game.board.show
 puts "Player #{game.current_player}, please enter move"
@@ -24,5 +29,9 @@ until game.status == :win || game.status == :tie
   game.board.show
 end
 
+user0.update_stats(game.result)
+user1.update_stats(game.result)
 puts "Player #{game.current_player} won!"
+p user0.show_stats
+p user1.show_stats
 

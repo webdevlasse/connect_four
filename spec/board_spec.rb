@@ -1,4 +1,6 @@
 require_relative '../lib/board'
+require 'simplecov'
+SimpleCov.start
 
 describe Board do
   let(:player) { 1 }

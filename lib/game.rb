@@ -23,39 +23,29 @@ class Game
     @board.place(column - 1, current_player)
   end
 
-  def save_game_result
-    game_result
-    #saves outcome of game to DB
-  end
-
-  def game_result
-    result = { @current_player => '', other_player => '' }
+  def result
+    result = [:loss, :loss]
     if won?
-      result[@current_player], result[@other_player] = :win, :loss
+      result[current_player] = :win
     elsif tie?
-      result[@current_player], result[@other_player] = :tie, :tie
+      result = [:tie, :tie]
     end
     result
   end
 
-  # def play_human_vs_human
-  #   puts "Player #{current_player}, please enter move"
-  #   player_input = gets.chomp.to_i
-  #   send_move_to_board(player_input)
-  #
-  #   until status == :win || status == :tie
-  #     next_turn
-  #     puts "Player #{current_player}, please enter move"
-  #     player_input = gets.chomp.to_i
-  #     until send_move_to_board(player_input)
-  #       puts "That column is full. Please choose another column."
-  #       player_input = gets.chomp.to_i
-  #     end
+  # def result
+  #   result = [[@current_player, ''], [other_player, '']]
+  #   if won?
+  #     result[0][1] = :win
+  #     result[1][1] = :loss
+  #     #result[@current_player], result[@other_player] = :win, :loss
+  #   elsif tie?
+  #     result[0][1] = :tie
+  #     result[1][1] = :tie
+  #     # result[@current_player], result[@other_player] = :tie, :tie
   #   end
-  #   p board
-  #   puts "Player #{current_player} won!"
+  #   result
   # end
-
 
   private
   def other_player
