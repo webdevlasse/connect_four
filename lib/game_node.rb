@@ -14,16 +14,16 @@ class GameNode
       return val
     end
 
-    val = self.get_child_nodes.map { |child| child.value.invert }.max
+    val = self.get_moves.map { |move, node| node.value.invert }.max
     GameNode.node_values[self] = val
   end
 
-  def eql?(other)
-    raise NotImplementedError
+  def load_values(values_hash)
+    GameNode.node_values = values_hash
   end
 
-  def hash
-    raise NotImplementedError
+  def values
+    GameNode.node_values
   end
 
   def get_moves
@@ -31,6 +31,14 @@ class GameNode
   end
 
   def leaf_value
+    raise NotImplementedError
+  end
+
+  def eql?(other)
+    raise NotImplementedError
+  end
+
+  def hash
     raise NotImplementedError
   end
 

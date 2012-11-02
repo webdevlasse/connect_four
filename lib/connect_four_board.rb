@@ -1,6 +1,6 @@
 require_relative 'col'
 require_relative 'board'
-
+require_relative 'end_state'
 
 class ConnectFourBoard < Board
 
@@ -12,8 +12,12 @@ class ConnectFourBoard < Board
     @cells = self.create_columns(num_cols)
   end
 
-  def set_cells(cells)
-    cells.replace = cells
+  def set_cells(new_cells)
+    cells.replace(new_cells)
+  end
+
+  def set_value(value)
+    @value = value
   end
 
   def place(column_index, player)
@@ -27,14 +31,18 @@ class ConnectFourBoard < Board
   end
 
 
-
-
   def self.from_line(line)
     converted_cells = line.split(',')
-    converted_cells.pop
+    
+    case converted_cells.pop
+    when "win" then value = EndState.WIN
+    when "draw" then value = EndState.TIE
+    when "loss" then value = EndState.LOSE
+    end
 
-    board = ConnectFourBoard.new
 
+    board = self.new
+    board.set_value(value)
     converted_cells.map! do |cell|
       case cell
       when 'b' then 'b'
@@ -44,7 +52,7 @@ class ConnectFourBoard < Board
     end
     
     board.cells.each do |column|
-      board.num_rows.times { column.pop }
+      board.num_rows.times{ column.pop }
       board.num_rows.times { column << converted_cells.shift }
     end
     board

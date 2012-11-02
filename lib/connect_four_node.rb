@@ -8,18 +8,19 @@ class ConnectFourNode < GameNode
   def initialize(player, board)
     @player = player
     @board = board
+    @count = 0
+    @max = 0
   end
 
 
   def get_moves
-    value = leaf_value
-    return {} unless value.nil?
+    return {} unless leaf_value.nil?
 
     moves = {}
     7.times do |index|
       if board.cells[index].available?
         new_board = ConnectFourBoard.new
-        new_board.set_cells(board)
+        new_board.set_cells(board.cells)
         new_board.place(index, 1 - player)
         moves["#{index}"] = self.class.new(1 - player, new_board)
       end
@@ -28,7 +29,10 @@ class ConnectFourNode < GameNode
   end
 
   def leaf_value
-     
+     if @count > @max
+      @count += 1
+      return false
+    end
   end
 
   def eql?(other)
@@ -40,7 +44,7 @@ class ConnectFourNode < GameNode
   end
 
   def hash
-    board.hash
+    board.cells.hash
   end
 
 end

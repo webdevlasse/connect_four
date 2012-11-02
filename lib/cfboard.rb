@@ -1,5 +1,6 @@
 require_relative 'column'
 require_relative 'board'
+require_relative 'end_state'
 
 
 class CFBoard < Board
@@ -18,9 +19,9 @@ class CFBoard < Board
     value = ""
     
     case converted_cells.pop
-    when "win" then value = WIN
-    when "draw" then value = DRAW
-    when "loss" then value = LOSS
+    when "win" then value = EndState.WIN
+    when "draw" then value = EndState.TIE
+    when "loss" then value = EndState.LOSE
     end
 
     board = CFBoard.new(value)
