@@ -8,7 +8,7 @@ class Game
   end
 
   def status
-    @board.state
+    board.state
   end
 
   def next_turn
@@ -43,13 +43,15 @@ class Game
     false
   end
 
+  def draw_board
+    board.show
+  end
+
   private
 
   def other_player
     current_player == 0 ? 1 : 0
   end
-
-
 
   def won?
     status == :win
@@ -58,4 +60,5 @@ class Game
   def tie?
     status == :tie
   end
+
 end
