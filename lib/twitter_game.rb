@@ -40,7 +40,7 @@ class TwitterGame < Game
     board.cells.each_with_index do |col, index|
       column_index = index if challenger_board.column_length(index) > board.column_length(index)
     end
-    board.place(column_index, 1)
+    board.place(column_index, current_player)
     column_index + 1
   end
 

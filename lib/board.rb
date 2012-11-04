@@ -15,7 +15,6 @@ class Board
     cells.each do |column|
       if column.length < 6
         (6 - column.length).times { column.unshift(".")}
-        # (6 - column.length).times { column << "."}
       end
     end.transpose
   end
@@ -41,7 +40,6 @@ class Board
 
   def place(column_index, player)
     @current_column_played = column_index
-    p @current_column_played
     @current_player = player
     cells[column_index].place(player, num_rows)
   end
