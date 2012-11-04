@@ -5,8 +5,6 @@ TWITTER_CONSUMER_KEY = "yR6hU0qcwt0vVd8GRwchXw"
 TWITTER_CONSUMER_SECRET = "VQTgrwTonVYJQY4o1nS1ucAJ3eUILfOOhcUkKoLFko"
 TWITTER_OAUTH_TOKEN = "921355608-LBZ9ASptzT0f9tAbCmcxJjREcjj82kMnMdzrrBbT"
 TWITTER_OAUTH_TOKEN_SECRET = "jdsihj0ZNeTXZxaGEJ4h0yp6RUkj1SOMe8dGbaM20"
-HASHTAG = "#deepteal"
-MSG_TO_MATCH = "testtest"
 
 TweetStream.configure do |config|
     config.consumer_key       = TWITTER_CONSUMER_KEY
@@ -52,11 +50,8 @@ TweetStream::Client.new.on_delete{ |status_id, user_id|
   }.on_limit { |skip_count|
     puts "skipping"
     sleep 5
-  }.track(HASHTAG) do |status|
-    msg = status.text
-    puts status.in_reply_to_screen_name
-    @username = status.user.screen_name if challenge?(msg)
-    puts @username
+  }.track('bieber') do |status|
+    puts status.text
     puts "end"
 end
 

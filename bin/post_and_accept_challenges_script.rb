@@ -38,7 +38,6 @@ $sessions_container = []
 def post_challenge
   post_id = Time.now.strftime("%F %T.%L")
   Twitter.update("Who wants to get demolished? \#dbc_c4 #{post_id}")
-  listen_for_game
 end
 
 def acceptance?(message)
@@ -87,29 +86,39 @@ end
 # Post a challenge and open the TweetStream
 # ----------------------------------------------------------------------------------------
 
-post_challenge
+# post_challenge
 
-def listen_for_game
-  TweetStream::Client.new.on_delete{ |status_id, user_id|
-    Tweet.delete(status_id)
-    }.on_limit { |skip_count|
-      puts "skipping"
-      sleep 5
-    }.track('#dbc_c4') do |status|
-      if $session_container < 6
-        msg = status.text
-        opponent = status.user.screen_name
-        if not_already_playing?(opponent) && acceptance?(msg)
-          Twitter.update("\@{opponent} get ready to be crushed!")
-          start_game(opponent, 'posted')
-          post_challenge
-        elsif board?(msg)
-          board = strip_to_board(msg)
-          start_game(opponent) unless send_to_session(opponent, board)
-        elsif not_already_playing?(opponent) && take_challenge?(msg)
-          Twitter.update("\@{opponent} Game on! \#dbc_c4")
-          start_game(opponent, 'accepted')
-        end
+# Twitter.search("#dbc_c4").results.map do |status|
+TweetStream::Client.new.track('#dbc_c4') do |status|
+# .on_delete{ |status_id, user_id| puts "2"
+#   Tweet.delete(status_id)
+#   puts "3"
+#   }.on_limit { |skip_count|
+#     puts "skipping"
+#     sleep 5
+  # }
+    puts 'Message:'
+    puts "#{status.user.screen_name}"
+    puts "#{status.text}"
+    if $sessions_container.length < 6
+      puts 'running'
+      msg = status.text
+      opponent = status.user.screen_name
+      if not_already_playing?(opponent) && acceptance?(msg)
+        puts 'accept'
+        Twitter.update("\@#{opponent} get ready to be crushed!")
+        start_game(opponent, 'posted')
+        post_challenge
+      elsif board?(msg)
+        puts 'received'
+        board = strip_to_board(msg)
+        send_to_session(opponent, board)
+      elsif not_already_playing?(opponent) && take_challenge?(msg)
+        puts 'take'
+        Twitter.update("\@#{opponent} Game on! \#dbc_c4")
+        start_game(opponent, 'accepted')
       end
     end
-end
+  end
+
+
