@@ -11,6 +11,33 @@ class Board
     @value
   end
 
+  def to_twitter
+    cells.each do |column|
+      if column.length < 6
+        (6 - column.length).times { column.unshift(".")}
+      end
+    end.transpose
+  end
+
+  def set_cells(array)
+    cells.replace(array)
+    convert_to_columns
+  end
+
+  def convert_to_columns
+    cells.map! do |array|
+      column = Column.new
+      array.each do |cell|
+        column << cell
+      end
+      column
+    end
+  end
+
+  def column_length(column_index)
+    cells[column_index].nil? ? 0 : cells[column_index].length
+  end
+
   def place(column_index, player)
     @current_column_played = column_index
     @current_player = player
@@ -64,6 +91,10 @@ class Board
 
   def nil_to_hash_sign(array)
     array.map { |element| element.nil? ? "#" : element }
+  end
+
+  def nil_to_period(array)
+    array.map { |element| element.nil? ? "." : element }
   end
 
   def diagonals

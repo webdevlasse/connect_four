@@ -1,0 +1,36 @@
+def column_win?
+  result = []
+  cells.each do |cell|
+    p cell.join
+    cell.join.each do |row|
+      p row
+      result << connect_four?(row)
+    end
+  end
+  result.include?(true)
+end
+
+  def row_win?
+    result = []
+    cells.transpose.each do |cell|
+      cell.join.each do |row|
+        p row
+        result << connect_four?(row)
+      end
+    end
+    result.include?(true)
+  end
+
+  def diagonal_win?
+    results = []
+    (0..6).each do |column|
+      if cells[column] != nil
+        diagonal = [[], column, cells[column].length - 1, cells.length - 1].map { |diagonal| nil_to_hash_sign(diagonal).join }
+        results << connect_four?(diagonal)
+      else
+        diagonal = [[], column, 0, cells.length - 1].map { |diagonal| nil_to_hash_sign(diagonal).join }
+        results << connect_four?(diagonal)
+      end
+    end
+    results.include?(true)
+  end
