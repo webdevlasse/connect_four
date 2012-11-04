@@ -13,6 +13,7 @@ class Session
 
   def receive(board)
     # call method that runs the game on a string board and send_board_back
+    # the return here should be true if session_handler needs to kill the session, fall if ongoing
   end
 
   def send_board_back(board_to_send)
@@ -39,3 +40,5 @@ end
 # save results to db
 
 # session should know when someone wins and tweet back accordingly
+
+# delete a session by using $session_container.delete_if { |session| session.player == player }

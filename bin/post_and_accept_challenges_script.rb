@@ -42,35 +42,15 @@ def post_challenge
 end
 
 def acceptance?(message)
-  return !(message =~ /[\s]*\@deepteal[\s]*[G|g]ame[\s]*on[!]?[\s]*\#dbc_c4[\s]*/).nil?
+  return !(message =~ /[\s]*\@deepteal[\s]*[G|g]ame[\s]*on[!]?[\s]*\#dbc_c4/).nil?
 end
 
 def board?(message)
-  return !(message =~ /[\s]*\@deepteal[\s]*(\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|)[\s]*\#dbc_c4[\s]*/).nil?
+  return !(message =~ /[\s]*\@deepteal[\s]*(\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|)[\s]*\#dbc_c4/).nil?
 end
 
 def take_challenge?(message)
-
-end
-
-
-def start_game(opponent)
-  $sessions_container << Session.new(opponent)
-end
-
-def strip_to_board(message)
-  message.match(/[\s]*\@deepteal[\s]*(\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|)[\s]*\#dbc_c4[\s]*/)
-  return $1
-end
-
-def send_to_session(opponent, board)
-  $sessions_container.each do |session|
-    if session.player == opponent
-      session.receive(board)
-      return true
-    end
-  end
-  false
+  return !(message =~ /[W|w]ho wants to get demolished\? \#dbc_c4/).nil?
 end
 
 def not_already_playing?(opponent)
@@ -78,6 +58,29 @@ def not_already_playing?(opponent)
     return false if session.player == opponent
   end
   return true
+end
+
+def start_game(opponent)
+  $sessions_container << Session.new(opponent)
+end
+
+def strip_to_board(message)
+  message.match(/[\s]*\@deepteal[\s]*(\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|)[\s]*\#dbc_c4/)
+  return $1
+end
+
+def send_to_session(opponent, board)
+  $sessions_container.each do |session|
+    if session.player == opponent
+      kill_session(session) if session.receive(board)
+      return true
+    end
+  end
+  false
+end
+
+def kill_session(session_to_kill)
+  $session_container.delete_if { |session| session == session_to_kill }
 end
 
 # ----------------------------------------------------------------------------------------
