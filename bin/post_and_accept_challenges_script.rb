@@ -71,7 +71,7 @@ end
 
 def send_to_session(opponent, board)
   $sessions_container.each do |session|
-    if session.player == opponent
+    if session == opponent
       kill_session(session) if session.receive(board)
       return true
     end
@@ -96,18 +96,20 @@ def listen_for_game
       puts "skipping"
       sleep 5
     }.track('#dbc_c4') do |status|
-      msg = status.text
-      opponent = status.user.screen_name
-      if not_already_playing?(opponent) && acceptance?(msg)
-        Twitter.update("\@{opponent} get ready to be crushed!")
-        start_game(opponent)
-        post_challenge
-      elsif board?(msg)
-        board = strip_to_board(msg)
-        start_game(opponent) unless send_to_session(opponent, board)
-      elsif not_already_playing?(opponent) && take_challenge?(msg)
-        Twitter.update("\@{opponent} Game on! \#dbc_c4")
-        start_game(opponent)
+      if $session_container < 6
+        msg = status.text
+        opponent = status.user.screen_name
+        if not_already_playing?(opponent) && acceptance?(msg)
+          Twitter.update("\@{opponent} get ready to be crushed!")
+          start_game(opponent, 'posted')
+          post_challenge
+        elsif board?(msg)
+          board = strip_to_board(msg)
+          start_game(opponent) unless send_to_session(opponent, board)
+        elsif not_already_playing?(opponent) && take_challenge?(msg)
+          Twitter.update("\@{opponent} Game on! \#dbc_c4")
+          start_game(opponent, 'accepted')
+        end
       end
     end
 end

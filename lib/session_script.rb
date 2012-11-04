@@ -8,12 +8,12 @@ enemy_last = false
 enemy_first = true
 
 if enemy_first
-  game.board.show
-  puts game.current_player
+  # game.board.show
+  # puts game.current_player
 
   # Get challenger board
-  print "Pitiful human, make your move >> "
-  move = gets.chomp
+  # print "Pitiful human, make your move >> "
+  # move = gets.chomp
   game.set_challenger_board(move)
   ai.play(game.challenger_move)
   p2.move
@@ -21,22 +21,22 @@ if enemy_first
 end
 
 begin
-  game.board.show
-  puts game.current_player
+  # game.board.show
+  # puts game.current_player
   # AI MOVE
   move = ai.move
   game.send_move_to_board(move)
   p2.play(move)
   enemy_last = false
-  game.next_turn
+  # game.next_turn
 
   unless game.over?
     # Send board to twitter
-    game.board.show
+    # game.board.show
 
     # Get challenger board
-    print "Pitiful human, make your move >> "
-    move = gets.chomp
+    # print "Pitiful human, make your move >> "
+    # move = gets.chomp
 
     # Update challenger board
     game.set_challenger_board(move)
