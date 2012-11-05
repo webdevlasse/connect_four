@@ -14,7 +14,7 @@ class Session
       @ai = AI.new
       @p2 = AI.new
       # is the player attr reader set to the opponent's Twitter username?
-      @game = TwitterGame.new('deepteal', opponent)
+      @game = TwitterGame.new('deepteal2', opponent)
       move = ai.move
       game.send_move_to_board(move)
       p2.play(move)
@@ -22,7 +22,7 @@ class Session
     else
       @ai = AI.new
       @p2 = AI.new
-      @game = TwitterGame.new(opponent, 'deepteal')
+      @game = TwitterGame.new(opponent, 'deepteal2')
     end
   end
 
@@ -32,10 +32,11 @@ class Session
     game.send_move_to_board(move)
     p2.play(move)
     board_to_send = game.to_twitter
-    if game.over?
-      send_win_message(board_to_send)
-      return true
-    end
+    # if game.over?
+    #   send_win_message(board_to_send)
+    #   # Save to DB
+    #   return true
+    # end
     send_board_back(board_to_send)
     return false
   end

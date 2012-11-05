@@ -9,10 +9,10 @@ require_relative '../lib/session'
 # Twitter configuration
 # ----------------------------------------------------------------------------------------
 
-TWITTER_CONSUMER_KEY = "yR6hU0qcwt0vVd8GRwchXw"
-TWITTER_CONSUMER_SECRET = "VQTgrwTonVYJQY4o1nS1ucAJ3eUILfOOhcUkKoLFko"
-TWITTER_OAUTH_TOKEN = "921355608-LBZ9ASptzT0f9tAbCmcxJjREcjj82kMnMdzrrBbT"
-TWITTER_OAUTH_TOKEN_SECRET = "jdsihj0ZNeTXZxaGEJ4h0yp6RUkj1SOMe8dGbaM20"
+TWITTER_CONSUMER_KEY = "WRmFphJHaVLTdsKzkTg"
+TWITTER_CONSUMER_SECRET = "FKEFaqBEDE5CnNnFaxkYyD18RCiWrMekruLJYykEaa0"
+TWITTER_OAUTH_TOKEN = "921355608-f6VYIYZzqEJVRZxJ9ZaCT0boA47Q95O35TdCegzC"
+TWITTER_OAUTH_TOKEN_SECRET = "Eb6DyOlDvG7KcMzthExkIaxoTObOmZ00BOOCU8VLvX4"
 
 Twitter.configure do |config|
     config.consumer_key       = TWITTER_CONSUMER_KEY
@@ -41,11 +41,11 @@ def post_challenge
 end
 
 def acceptance?(message)
-  return !(message =~ /[\s]*\@deepteal[\s]*[G|g]ame[\s]*on[!]?[\s]*\#dbc_c4/).nil?
+  return !(message =~ /[\s]*\@deepteal2[\s]*[G|g]ame[\s]*on[!]?[\s]*\#dbc_c4/).nil?
 end
 
 def board?(message)
-  return !(message =~ /[\s]*\@deepteal[\s]*(\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|)[\s]*\#dbc_c4/).nil?
+  return !(message =~ /[\s]*\@deepteal2[\s]*(\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|)[\s]*\#dbc_c4/).nil?
 end
 
 def take_challenge?(message)
@@ -59,18 +59,18 @@ def not_already_playing?(opponent)
   return true
 end
 
-def start_game(opponent)
-  $sessions_container << Session.new(opponent)
+def start_game(opponent, posted_accepted)
+  $sessions_container << Session.new(opponent, posted_accepted)
 end
 
 def strip_to_board(message)
-  message.match(/[\s]*\@deepteal[\s]*(\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|)[\s]*\#dbc_c4/)
+  message.match(/[\s]*\@deepteal2[\s]*(\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|)[\s]*\#dbc_c4/)
   return $1
 end
 
 def send_to_session(opponent, board)
   $sessions_container.each do |session|
-    if session == opponent
+    if session.player == opponent
       kill_session(session) if session.receive(board)
       return true
     end
@@ -79,17 +79,52 @@ def send_to_session(opponent, board)
 end
 
 def kill_session(session_to_kill)
-  $session_container.delete_if { |session| session == session_to_kill }
+  $sessions_container.delete_if { |session| session == session_to_kill }
 end
 
 # ----------------------------------------------------------------------------------------
 # Post a challenge and open the TweetStream
 # ----------------------------------------------------------------------------------------
 
-# post_challenge
+post_challenge
+$time = Time.now
 
-# Twitter.search("#dbc_c4").results.map do |status|
-TweetStream::Client.new.track('#dbc_c4') do |status|
+##### Do first search outside of loop?
+# first_search = Twitter.search("#dbc_c4", :count => 10, :result_type => "recent").results
+# @tweets_container = first_search
+
+# if $sessions_container.length < 6
+#       p @tweets_container
+#       @tweets_container.each do |status|
+#         puts 'second'
+#         msg = status.text
+#         opponent = status.user.screen_name
+#         if not_already_playing?(opponent) && acceptance?(msg)
+#           puts 'accept'
+#           Twitter.update("\@#{opponent} get ready to be crushed!")
+#           start_game(opponent, 'posted')
+#           post_challenge
+#         elsif board?(msg)
+#           puts 'received'
+#           board = strip_to_board(msg)
+#           send_to_session(opponent, board)
+#         elsif not_already_playing?(opponent) && take_challenge?(msg)
+#           puts 'take'
+#           Twitter.update("\@#{opponent} Game on! \#dbc_c4")
+#           start_game(opponent, 'accepted')
+#         end
+#       end
+#     end
+
+loop do
+  @last_status_id = 0 || @tweets_container.last.status_id
+  @tweets_container = []
+  # array = Twitter.search("#dbc_c4", :count => 10, :result_type => "recent", :since_id => @last_status_id).results
+  # @tweets_container = []
+  @tweets_container = Twitter.search("#dbc_c4", :count => 10, :result_type => "recent", :since_id => @last_status_id).results
+  # @tweets_container = []
+
+# TweetStream::Client.new.track('#dbc_c4') do |status|
 # .on_delete{ |status_id, user_id| puts "2"
 #   Tweet.delete(status_id)
 #   puts "3"
@@ -97,28 +132,49 @@ TweetStream::Client.new.track('#dbc_c4') do |status|
 #     puts "skipping"
 #     sleep 5
   # }
-    puts 'Message:'
-    puts "#{status.user.screen_name}"
-    puts "#{status.text}"
-    if $sessions_container.length < 6
-      puts 'running'
-      msg = status.text
-      opponent = status.user.screen_name
-      if not_already_playing?(opponent) && acceptance?(msg)
-        puts 'accept'
-        Twitter.update("\@#{opponent} get ready to be crushed!")
-        start_game(opponent, 'posted')
-        post_challenge
-      elsif board?(msg)
-        puts 'received'
-        board = strip_to_board(msg)
-        send_to_session(opponent, board)
-      elsif not_already_playing?(opponent) && take_challenge?(msg)
-        puts 'take'
-        Twitter.update("\@#{opponent} Game on! \#dbc_c4")
-        start_game(opponent, 'accepted')
+  # status.each do |obj|
+  #   $tweets_container.unshift(status.pop)
+  #   $tweets_container.push(obj) if !$tweets_container.include?(obj)
+  # end
+
+  # ($tweets_container.length - 10).times do
+  #   $tweets_container.delete_at(10)
+  # end
+
+    # array.each do |tweet|
+    #   p tweet.created_at
+    #   p $time
+    #   if tweet.created_at >= $time
+    #     @tweets_container.unshift(tweet)
+    #   end
+    # end
+
+    $time = Time.now
+
+    puts "first"
+    p $sessions_container
+    if $sessions_container.length < 2
+      # p @tweets_container
+      @tweets_container.each do |status|
+        puts 'second'
+        msg = status.text
+        opponent = status.user.screen_name
+        if not_already_playing?(opponent) && acceptance?(msg)
+          puts 'accept'
+          Twitter.update("\@#{opponent} get ready to be crushed! #{Time.now}")
+          start_game(opponent, 'posted')
+          # post_challenge
+        elsif board?(msg)
+          puts 'received'
+          board = strip_to_board(msg)
+          send_to_session(opponent, board)
+        elsif not_already_playing?(opponent) && take_challenge?(msg)
+          puts 'take'
+          Twitter.update("\@#{opponent} Game on! \#dbc_c4 #{Time.now}")
+          start_game(opponent, 'accepted')
+        end
       end
     end
-  end
-
+  sleep 10
+end
 
