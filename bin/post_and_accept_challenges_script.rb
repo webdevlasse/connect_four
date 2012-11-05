@@ -19,13 +19,6 @@ TWITTER_CONSUMER_SECRET = "FKEFaqBEDE5CnNnFaxkYyD18RCiWrMekruLJYykEaa0"
 TWITTER_OAUTH_TOKEN = "921355608-9xHR81OPPQ09nPD0JulgTLxIed1Sxeis54NE1ba4"
 TWITTER_OAUTH_TOKEN_SECRET = "FfgIBOA3WPClvbtwlwTmXoJvdA8rUm5ThT5rW4MyYGU"
 
-Twitter.configure do |config|
-    config.consumer_key       = TWITTER_CONSUMER_KEY
-    config.consumer_secret    = TWITTER_CONSUMER_SECRET
-    config.oauth_token        = TWITTER_OAUTH_TOKEN
-    config.oauth_token_secret = TWITTER_OAUTH_TOKEN_SECRET
-end
-
 TweetStream.configure do |config|
     config.consumer_key       = TWITTER_CONSUMER_KEY
     config.consumer_secret    = TWITTER_CONSUMER_SECRET
@@ -94,7 +87,7 @@ end
 # post_challenge
 
 # Twitter.search("#dbc_c4").results.map do |status|
-TweetStream::Client.new.track('#dbc_c4') do |status|
+TweetStream::Client.new.track("#bieber") do |status|
 # .on_delete{ |status_id, user_id| puts "2"
 #   Tweet.delete(status_id)
 #   puts "3"
