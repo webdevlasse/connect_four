@@ -4,7 +4,7 @@ class Game
   attr_reader :board, :current_player
   def initialize
     @board = Board.new
-    @current_player = 0
+    @current_player = 1
   end
 
   def status
