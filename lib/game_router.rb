@@ -18,7 +18,7 @@ class GameRouter
 
       puts "Listening on port: #{port}..."
       Thread.start(server.accept) do |client|
-        fam, port, ip, hostname = client.addr
+        fam, port, hostname, ip = client.peeraddr
         puts "Connection initiated from #{hostname}:#{port}"
         message = client.read
         puts "Message from #{hostname}:#{port}: #{message}"
