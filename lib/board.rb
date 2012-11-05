@@ -14,7 +14,7 @@ class Board
   def to_twitter
     cells.each do |column|
       if column.length < 6
-        (6 - column.length).times { column.unshift(".")}
+        (6 - column.length).times { column.unshift(".") }
       end
     end.transpose
   end

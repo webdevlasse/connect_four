@@ -9,10 +9,15 @@ require_relative '../lib/session'
 # Twitter configuration
 # ----------------------------------------------------------------------------------------
 
-TWITTER_CONSUMER_KEY = "yR6hU0qcwt0vVd8GRwchXw"
-TWITTER_CONSUMER_SECRET = "VQTgrwTonVYJQY4o1nS1ucAJ3eUILfOOhcUkKoLFko"
-TWITTER_OAUTH_TOKEN = "921355608-LBZ9ASptzT0f9tAbCmcxJjREcjj82kMnMdzrrBbT"
-TWITTER_OAUTH_TOKEN_SECRET = "jdsihj0ZNeTXZxaGEJ4h0yp6RUkj1SOMe8dGbaM20"
+# TWITTER_CONSUMER_KEY = "yR6hU0qcwt0vVd8GRwchXw"
+# TWITTER_CONSUMER_SECRET = "VQTgrwTonVYJQY4o1nS1ucAJ3eUILfOOhcUkKoLFko"
+# TWITTER_OAUTH_TOKEN = "921355608-LBZ9ASptzT0f9tAbCmcxJjREcjj82kMnMdzrrBbT"
+# TWITTER_OAUTH_TOKEN_SECRET = "jdsihj0ZNeTXZxaGEJ4h0yp6RUkj1SOMe8dGbaM20"
+
+TWITTER_CONSUMER_KEY = "WRmFphJHaVLTdsKzkTg"
+TWITTER_CONSUMER_SECRET = "FKEFaqBEDE5CnNnFaxkYyD18RCiWrMekruLJYykEaa0"
+TWITTER_OAUTH_TOKEN = "921355608-9xHR81OPPQ09nPD0JulgTLxIed1Sxeis54NE1ba4"
+TWITTER_OAUTH_TOKEN_SECRET = "FfgIBOA3WPClvbtwlwTmXoJvdA8rUm5ThT5rW4MyYGU"
 
 Twitter.configure do |config|
     config.consumer_key       = TWITTER_CONSUMER_KEY
