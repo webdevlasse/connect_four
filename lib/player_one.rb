@@ -30,7 +30,7 @@ begin
   game.draw_board
 
   new_board = game.to_twitter
-  client = TCPSocket.open('localhost', 5500)
+  client = TCPSocket.open('192.168.0.103', 5500)
   client.write(new_board)
   puts "Sending board: #{new_board}"
   client.close
@@ -60,3 +60,5 @@ begin
 
   game.draw_board
 end until game.status == :win || game.status == :tie
+
+game.draw_board
