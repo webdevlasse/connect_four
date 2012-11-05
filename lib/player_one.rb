@@ -34,13 +34,6 @@ begin
   client.write(new_board)
   puts "Sending board: #{new_board}"
   client.close
-  
-  
-  
-  
-  
-
-  
 
   puts "Waiting for board..."
   server = TCPServer.open(6500)
