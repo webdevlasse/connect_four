@@ -14,13 +14,6 @@ TWITTER_CONSUMER_SECRET = "FKEFaqBEDE5CnNnFaxkYyD18RCiWrMekruLJYykEaa0"
 TWITTER_OAUTH_TOKEN = "921355608-f6VYIYZzqEJVRZxJ9ZaCT0boA47Q95O35TdCegzC"
 TWITTER_OAUTH_TOKEN_SECRET = "Eb6DyOlDvG7KcMzthExkIaxoTObOmZ00BOOCU8VLvX4"
 
-Twitter.configure do |config|
-    config.consumer_key       = TWITTER_CONSUMER_KEY
-    config.consumer_secret    = TWITTER_CONSUMER_SECRET
-    config.oauth_token        = TWITTER_OAUTH_TOKEN
-    config.oauth_token_secret = TWITTER_OAUTH_TOKEN_SECRET
-end
-
 TweetStream.configure do |config|
     config.consumer_key       = TWITTER_CONSUMER_KEY
     config.consumer_secret    = TWITTER_CONSUMER_SECRET

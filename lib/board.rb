@@ -12,7 +12,12 @@ class Board
   end
 
   def to_twitter
-    cells.each do |column|
+    new_cells = create_columns(num_cols)
+    cells.each_with_index do |column, index|
+      column.each { |cell| new_cells[index] << cell }
+    end
+
+    new_cells.each do |column|
       if column.length < 6
         (6 - column.length).times { column.unshift(".") }
       end
