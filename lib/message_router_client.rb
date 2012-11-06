@@ -1,6 +1,6 @@
 require 'socket'
 
-class GameRouterClient
+class MessageRouterClient
 
   attr_reader :server, :port, :username, :listen_port
 
@@ -8,7 +8,7 @@ class GameRouterClient
     @server = server_hostname
     @port = server_port
     @username = user_name
-    @listen_port = Random.rand(1000..30_000)
+    @listen_port = Random.rand(2000..30_000)
   end
 
   def register
@@ -20,8 +20,8 @@ class GameRouterClient
     sleep 1
     socket.write(message)
     socket.close
-    puts "Waiting for server acknowledgement..."
-    listen
+    #puts "Waiting for server acknowledgement..."
+    #listen
   end
 
   def new_listen_port
@@ -40,9 +40,3 @@ class GameRouterClient
   end
   
 end
-
-# this = GameRouterClient.new('localhost', '5600', 'deepteal')
-# puts this.register
-# while true
-# puts this.listen
-# end 

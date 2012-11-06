@@ -1,8 +1,8 @@
 require 'socket'
-require_relative 'game_router_user'
+require_relative 'message_router_user'
 
 
-class GameRouter
+class MessageRouter
 
   attr_reader :port, :registered_users, :open_ports
 
@@ -35,15 +35,14 @@ class GameRouter
       username, port = strip_username_port(message)
       register(username, port.to_i, ip)
       sleep 1
-      puts registered_users.inspect
-      send_register_ack(ip, port, username)
+      #send_register_ack(ip, port, username)
     elsif has_recipient?(message)
       recipient = strip_recipient(message)
       forward_message(recipient, message)
       if registered?(recipient)
-        send_ack(ip, port, recipient, message)
+        #send_ack(ip, port, recipient, message)
       else
-        send_ack(ip, port, recipient, "No such recipient")
+        #send_ack(ip, port, recipient, "No such recipient")
       end
     else
       "Message not handled"
@@ -60,7 +59,7 @@ class GameRouter
   end
 
   def register(username, port, ip)
-    registered_users[username] = GameRouterUser.new(port, ip)
+    registered_users[username] = MessageRouterUser.new(port, ip)
   end
 
   def send_register_ack(hostname, port, username)
@@ -115,6 +114,3 @@ class GameRouter
   end
 
 end
-
-router = GameRouter.new(5600)
-router.start
