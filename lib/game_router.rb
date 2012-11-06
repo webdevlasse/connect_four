@@ -1,5 +1,5 @@
 require 'socket'
-require_relative 'game_server_user'
+require_relative 'game_router_user'
 
 
 class GameRouter
@@ -32,10 +32,19 @@ class GameRouter
 
   def handle(message, port, ip)
     if register?(message)
-      puts "first"
-      register(strip_username_port(message), ip)
+      username, port = strip_username_port(message)
+      register(username, port.to_i, ip)
+      sleep 1
+      puts registered_users.inspect
+      send_register_ack(ip, port, username)
     elsif has_recipient?(message)
-      forward_message(strip_recipient(message), message)
+      recipient = strip_recipient(message)
+      forward_message(recipient, message)
+      if registered?(recipient)
+        send_ack(ip, port, recipient, message)
+      else
+        send_ack(ip, port, recipient, "No such recipient")
+      end
     else
       "Message not handled"
     end
@@ -46,24 +55,27 @@ class GameRouter
     false
   end
 
-  def strip_username_port(message)
-    /@register\s+(.+)\s+(\d+)/.match(message)
-    [$1, $2]
+  def registered?(username)
+    registered_users.has_key?(username)
   end
 
-  def register(username_port_array, ip)
-    username, port = username_port_array
-    username = "@#{username}"
-    registered_users[username] = GameServerUser.new(port.to_i, ip)
+  def register(username, port, ip)
+    registered_users[username] = GameRouterUser.new(port, ip)
+  end
+
+  def send_register_ack(hostname, port, username)
     if registered?(username)
+      send(hostname, port, "Successfully registered #{username}")
       "Successfully registered #{username}"
     else
+      send(hostname, port, "Failed to register #{username}")
       "Failed to register #{username}"
     end
   end
 
-  def registered?(username)
-    registered_users.has_key?(username)
+  def strip_username_port(message)
+    /@register\s+(.+)\s+(\d+)/.match(message)
+    [$1, $2]
   end
 
   def has_recipient?(message)
@@ -72,24 +84,34 @@ class GameRouter
   end
 
   def strip_recipient(message)
-    message.split[0]
+    message.split[0].slice(1..-1)
   end
 
   def forward_message(recipient, message)
     if registered?(recipient)
       info = registered_users[recipient]
       puts "Sending message to #{recipient}, host: #{info.hostname} port: #{info.port}"
-      socket = TCPSocket.open(info.hostname, info.port)
-      sleep 1
-      socket.write(message)
-      socket.close
-      return "Sent #{message} to #{recipient}"
+      send(info.hostname, info.port, message)
     end
-    "Failed delivery to #{recipient}"
   end
 
   def port_open?(port)
     open_ports.include?(port)
+  end
+
+  def send(hostname, port, message)
+    Thread.new do
+      puts "Sending #{message} to #{hostname}:#{port}"
+      socket = TCPSocket.open(hostname, port)
+      sleep 1
+      socket.write(message)
+      socket.close
+    end
+  end
+
+  def send_ack(hostname, port, recipient, message)
+    send(hostname, port, "Sent #{message} to #{recipient}")
+    "Sent #{message} to #{hostname}:#{port}"
   end
 
 end

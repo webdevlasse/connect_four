@@ -1,4 +1,4 @@
-class GameServerUser
+class GameRouterUser
 
   attr_reader :port, :hostname
 

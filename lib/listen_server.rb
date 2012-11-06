@@ -1,6 +1,6 @@
 require 'socket'
 
-server = TCPServer.open(6500)
+server = TCPServer.open(16757)
 begin
   puts "Listening..."
   
