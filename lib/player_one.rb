@@ -1,57 +1,38 @@
-require_relative '../lib/twitter_game'
-require_relative '../lib/ai'
-require 'socket'
+require_relative 'twitter_game'
+require_relative 'game_router_client'
 
-# def listen(port)
-#   server = TCPServer.open(port)
-#   client = server.accept
-#   board = client.read
-#   client.close
-#   board
-# end
+def strip_username(message)
+  /(\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|\S{7}\|)/.match(message)
+  $1
+end
 
-# def send(hostname, port, board)
-#   client = TCPSocket.open(hostname, port)
-#   client.send("hey", 0)
-# end
+P2_USERNAME = "playerone"
 
-ai = AI.new
-p2 = AI.new
-game = TwitterGame.new("hi", "guy")
-enemy_last = false
-enemy_first = false
+grclient = GameRouterClient.new('192.168.0.150', 5600, 'playertwo')
+game = TwitterGame.new("new", "game")
 
-begin 
-  # AI MOVE
-  move = ai.move
-  game.send_move_to_board(move)
-  p2.play(move)
-  game.next_turn
+# Register with GameRouter
+grclient.register
+
+begin
+  # Wait for user move
   game.draw_board
-
-  new_board = game.to_twitter
-  client = TCPSocket.open('192.168.0.103', 5500)
-  client.write(new_board)
-  puts "Sending board: #{new_board}"
-  client.close
-
-  puts "Waiting for board..."
-  server = TCPServer.open(6500)
-
-  client = server.accept
-  puts "Connection open..."
-
-  move = client.read
-  puts "Got board: #{move}"
-  client.close
-  server.close
-
-  game.set_challenger_board(move)
-  ai.play(game.challenger_move)
-  p2.move
+  print "Choose a column to play >> "
+  until game.send_move_to_board(move)
+    puts "Either that column is full or that column doesn't exist. Please choose another column."
+    move = gets.chomp.to_i
+  end
+  message = "@#{P2_USERNAME} #{game.to_twitter}"
+  
+  # Send move to GameRouter
+  grclient.send(message)
   game.next_turn
 
-  game.draw_board
+  # Wait for board
+  new_board = listen
+  # Set challenger move
+  game.set_challenger_board(new_board)
+  game.challenger_move
+  game.next_turn
+
 end until game.status == :win || game.status == :tie
-
-game.draw_board

@@ -41,8 +41,8 @@ class GameRouterClient
   
 end
 
-this = GameRouterClient.new('localhost', '5600', 'deepteal')
-puts this.register
-while true
-puts this.listen
-end 
+# this = GameRouterClient.new('localhost', '5600', 'deepteal')
+# puts this.register
+# while true
+# puts this.listen
+# end 
