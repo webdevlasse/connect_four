@@ -1,0 +1,30 @@
+Connect Four with Twitter
+http://socrates.devbootcamp.com/challenges/196
+
+Requirements:
+- A game is initiated when one player sends a tweet with the following text:
+"@player2 Do you want to play Connect Four? Tweet '@player1 Game on! #dbc_c4' to start."
+
+- ... and receives this reply:
+"@player1 Game on! #dbc_c4"
+
+- Board must be formatted like this:
+|.......|.......|.......|.......|...XO..|..XOX..|
+-- rows separated by pipe characters and periods represent empty cells
+-- game pieces are X and 0
+-- initiating player is always X; responding player is always O
+
+- Coin toss
+-- When a game is confirmed, initiating player uses a #coin_toss method to determine who's going first
+-- When coin_toss returns tails, send this tweet:
+\"@player2 Coin toss result: 'tails'.  You go first. #dbc_c4\"
+
+--... at which point @player2 will tweet their move in response
+
+- Winning
+-- when a player wins they must respond with the board and the notification token I win! Good game.
+-- If the game is a draw, final move should be passed with the notification token Draw game. Play again?
+
+
+- Invalid moves
+-- Your code must listen for the notification token Invalid move! <error message>
