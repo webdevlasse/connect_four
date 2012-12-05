@@ -1,0 +1,101 @@
+--- !ruby/object:Twitter::Tweet
+attrs:
+  :coordinates: 
+  :text: ! '@clairegavs hard to make out, still gunky http://t.co/iJjYd6Tj'
+  :favorited: false
+  :truncated: false
+  :retweet_count: 0
+  :in_reply_to_screen_name: clairegavs
+  :source: <a href="http://twitter.com/download/android" rel="nofollow">Twitter for
+    Android</a>
+  :possibly_sensitive_editable: true
+  :possibly_sensitive: false
+  :in_reply_to_status_id_str: '264468303676850176'
+  :contributors: 
+  :geo: 
+  :retweeted: false
+  :id_str: '264478717391282176'
+  :entities:
+    :urls: []
+    :hashtags: []
+    :user_mentions:
+    - :indices:
+      - 0
+      - 11
+      :name: Claire Gavaghan
+      :id_str: '103680382'
+      :screen_name: clairegavs
+      :id: 103680382
+    :media:
+    - :type: photo
+      :url: http://t.co/iJjYd6Tj
+      :sizes:
+        :large:
+          :resize: fit
+          :h: 1024
+          :w: 768
+        :thumb:
+          :resize: crop
+          :h: 150
+          :w: 150
+        :small:
+          :resize: fit
+          :h: 340
+          :w: 255
+        :medium:
+          :resize: fit
+          :h: 600
+          :w: 450
+      :indices:
+      - 42
+      - 62
+      :display_url: pic.twitter.com/iJjYd6Tj
+      :media_url: http://p.twimg.com/A6ud_gECIAAmohN.jpg
+      :expanded_url: http://twitter.com/lisajandmarkm/status/264478717391282176/photo/1
+      :id_str: '264478717395476480'
+      :id: 264478717395476480
+      :media_url_https: https://p.twimg.com/A6ud_gECIAAmohN.jpg
+  :in_reply_to_user_id_str: '103680382'
+  :place: 
+  :user:
+    :follow_request_sent: 
+    :contributors_enabled: false
+    :following: 
+    :profile_background_image_url: http://a0.twimg.com/profile_background_images/583792179/x484e9cae6bb6dc21fbfa93f8ef146f7.png
+    :time_zone: 
+    :friends_count: 131
+    :url: 
+    :is_translator: false
+    :default_profile: false
+    :profile_background_image_url_https: https://si0.twimg.com/profile_background_images/583792179/x484e9cae6bb6dc21fbfa93f8ef146f7.png
+    :profile_link_color: D1736B
+    :statuses_count: 361
+    :notifications: 
+    :profile_background_color: E59469
+    :description: ''
+    :location: Southend
+    :profile_background_tile: true
+    :profile_image_url_https: https://si0.twimg.com/profile_images/1877601628/DSCF0082_-_Copy_normal.JPG
+    :default_profile_image: false
+    :profile_sidebar_fill_color: 8CBA9E
+    :favourites_count: 1
+    :geo_enabled: false
+    :profile_sidebar_border_color: B2D3B4
+    :protected: false
+    :id_str: '508721134'
+    :lang: en
+    :verified: false
+    :name: Lisa and Mark
+    :profile_use_background_image: true
+    :profile_image_url: http://a0.twimg.com/profile_images/1877601628/DSCF0082_-_Copy_normal.JPG
+    :screen_name: lisajandmarkm
+    :id: 508721134
+    :listed_count: 0
+    :utc_offset: 
+    :created_at: Wed Feb 29 11:03:27 +0000 2012
+    :profile_text_color: 8E6561
+    :followers_count: 24
+  :in_reply_to_user_id: 103680382
+  :in_reply_to_status_id: 264468303676850176
+  :id: 264478717391282176
+  :created_at: Fri Nov 02 21:26:56 +0000 2012

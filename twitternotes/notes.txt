@@ -1,0 +1,98 @@
+Connect Four
+Notes 10/31/2012
+
+Requirements:
+1. Human vs. human
+- 2 human players
+- Store gameplay history
+
+2. Human vs. computer
+
+######################
+
+Connect Four
+- has a 7x6 board
+- has 2 players
+
+Approach:
+- build connect four for 4x4 board, then scale up to 7x6
+
+Proposed classes:
+Game
+#starting_player
+
+Board
+#valid_move?
+#place_piece
+-- returns Board.new
+#row_win?
+#column_win?
+#diagonal_win?
+#tie?
+
+Node
+#player
+#board (with all possible moves)
+#child_nodes
+#value
+
+AI strategy
+
+#######################
+Game
+#board
+#current_player
+#next_turn
+#game_over?
+#send_move
+#save_result
+
+- Behavior:
+-- takes move from UI
+-- communicates move to board
+-- gets game state from board
+-- next turn/end game
+-- saves result to file or db
+
+Board
+#win?
+#columns
+
+Column
+#places (fields)
+#valid_move?
+#place_piece
+
+Interface
+- needs player and column #
+
+Flow:
+player gives board coordinates
+column checks if fields is empty and places piece
+
+#DB
+- how to associate username with player_id?
+e.g. associating 'Vincent' with 1 and 'Laverne' with 0
+- where to create/load db? at beginning of script or at end when game results need to be saved?
+- db schema
+- what is a game's board going to look like at initialization?
+
+Integration:
+- points of contact between game and board:
+-- won?
+-- tie?
+-- place!
+
+TO DO:
+
+Other
+- delete database.rb
+- game_spec.rb test suite [done]
+- documentation
+-- README
+-- Gemfile
+-- RVMRC [done]
+
+Scripts
+- human vs. human [done]
+- human vs. computer [done]
